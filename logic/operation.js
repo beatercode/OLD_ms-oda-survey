@@ -8,17 +8,24 @@ module.exports = {
     async execute(surveyId) {
 
         let record = await Surveys.findOne({ customId: surveyId })
+        if (record == null) { return { "status": 500 } }
 
-        let [embed, rows] = null
+        let embed = rows = output = null
 
-        switch (targetId.substring(0, 1)) {
+        switch (surveyId.toUpperCase().substring(0, 1)) {
             case "S":
                 logger.info("Ready to send a Survey")
-                [embed, rows] = this.prepareEmbedForSurveyOrQuiz(record, "S")
+                output = await this.prepareEmbedForSurveyOrQuiz(record, "S")
+                await Surveys.updateOne({ customId: surveyId }, { $set: { wasPublished: true } })
+                embed = output.embed
+                rows = output.rows
                 break
             case "Q":
                 logger.info("Ready to send a Quiz")
-                [embed, rows] = this.prepareEmbedForSurveyOrQuiz(record, "Q")
+                output = await this.prepareEmbedForSurveyOrQuiz(record, "Q")
+                await Surveys.updateOne({ customId: surveyId }, { $set: { wasPublished: true } })
+                embed = output.embed
+                rows = output.rows
                 break
             case "N":
                 logger.info("Ready to send a Novel")
@@ -26,8 +33,7 @@ module.exports = {
                 break
         }
 
-
-        return { "embeds": embeds, "rows": rows }
+        return { "embed": embed, "rows": rows }
     },
 
     // UTIL
@@ -48,7 +54,6 @@ module.exports = {
         let qOptionsLen = qOptions.length
         let howManyRows = Math.floor(qOptionsLen / 3)
         let rowReminder = qOptionsLen % 3
-        console.log(" -- Will use " + howManyRows + " rows for the buttons")
 
         let rows = []
         let responseIdPrefix = "survey_choose_" + record.customId
@@ -90,7 +95,7 @@ module.exports = {
         }
 
         // ADD OPEN BOX IF NEEDED
-        if (mode == "S") {
+        if (mode.toUpperCase() == "S") {
             rows.push(
                 new ActionRowBuilder()
                     .addComponents(
@@ -100,8 +105,7 @@ module.exports = {
             )
         }
 
-        await Surveys.updateOne({ customId: targetId }, { $set: { wasPublished: true } })
-        return { "embed": embed, "rows": rows }
+        return { "status": 200, "embed": embed, "rows": rows }
     },
 
     async prepareEmbedForNovel(record) {

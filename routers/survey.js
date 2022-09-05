@@ -4,25 +4,8 @@ const operation = require('../logic/operation')
 
 router.post('/', async (req, res) => {
     let survey = req.body
-    let result = operation.execute(survey.sruvey_id)
+    let result = await operation.execute(survey.survey_id)
     res.send(result);
 });
-
-/*
-
-simple post request:
-
-{
-    "sruvey_id": Q1
-}
-
-example response: 
-
-{
-    "embed": {},
-    "rows": [{}, {}]
-}
-
-*/
 
 module.exports = router;
