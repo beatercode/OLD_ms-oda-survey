@@ -8,9 +8,6 @@ module.exports = {
     async execute(surveyId) {
 
         let record = await Surveys.findOne({ customId: surveyId })
-        console.log(record)
-
-        return "ok"
 
         let [embed, rows] = null
 
