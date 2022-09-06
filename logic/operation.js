@@ -47,7 +47,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor("#ffffff")
             // .setTitle("ODA Clan Survey")
-            .setTitle(`${type} | ${record.name}`)
+            .setTitle(record.name)
             .setDescription(record.question)
 
         let qOptions = record.options
