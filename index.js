@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.use(express.json())
 app.use('/survey', survey)
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
