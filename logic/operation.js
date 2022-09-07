@@ -100,7 +100,7 @@ module.exports = {
                 new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder().setCustomId(responseIdPrefix + "_OPEN")
-                            .setLabel("INSERT TEXT").setStyle(ButtonStyle.Secondary)
+                            .setLabel("INSERT TEXT").setStyle(ButtonStyle.Success)
                     )
             )
         }
