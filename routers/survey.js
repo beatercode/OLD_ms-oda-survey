@@ -10,7 +10,6 @@ router.post('/send', async (req, res) => {
     res.send(result);
 });
 
-router.post("/test", async () => { console.log("got that test") });
 router.post("/", controller.create);
 router.get("/", controller.findAll);
 router.get("/:id", controller.findOne);
