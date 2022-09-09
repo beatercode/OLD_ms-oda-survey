@@ -1,6 +1,8 @@
 const Surveys = require("../models/Surveys.js")
 
 exports.create = async (req, res) => {
+
+    console.log("Im adding a new record")
     if (!req.body.name || !req.body.question) {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
